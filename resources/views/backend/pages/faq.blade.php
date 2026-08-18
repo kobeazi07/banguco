@@ -1,72 +1,49 @@
 @extends('backend.layouts.index')
+
 @section('konten')
     <div class="container-fluid">
-
-        <!-- Page Heading -->
-        <div class="row">
-            <div class="col-lg-6">
-                <h1 class="h3 mb-2 text-gray-800">Tables</h1>
-
-            </div>
-            <div class="col-lg-6" style="text-align: right !important;">
-                <!-- Button trigger modal -->
-                {{-- <button type="button" class="btn btn-primary text-right" style = "text-align = right;   " data-toggle="modal"
-                    data-target="#exampleModal">
-                    Tambah +
-                </button> --}}
-
-            </div>
-        </div>
 
 
         <!-- DataTales Example -->
         <div class="card shadow mb-4">
             <div class="card-header py-3">
-                <div class="col"></div>
                 <h6 class="m-0 font-weight-bold text-primary">DataTables Example</h6>
-
-                <!-- Modal -->
-                <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
-                    aria-hidden="true">
+                {{-- modal tambah --}}
+                <!-- Large modal -->
+                <button type="button" class="btn btn-primary float-right" data-toggle="modal"
+                    data-target=".bd-example-modal-lg">Tambah + </button>
+                <div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-hidden="true">
                     <div class="modal-dialog modal-lg">
                         <div class="modal-content">
                             <div class="modal-header">
-                                <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
-                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
+                                <h5 class="modal-title">Modal title</h5>
+                                <button type="button" class="close" data-dismiss="modal"><span>&times;</span>
                                 </button>
                             </div>
-                            <form id="formabout" enctype="multipart/form-data">
-                                @csrf
-                                <div class="modal-body">
+                            <div class="modal-body">
+                                <form id="formfaq" enctype="multipart/form-data">
+                                    @csrf
+
                                     <div class="form-group">
                                         <label for="exampleFormControlInput1">Judul</label>
                                         <input type="text" class="form-control" name="judul"
-                                            id="exampleFormControlInput1" placeholder="masukkan about">
+                                            id="exampleFormControlInput1" placeholder="masukkan judul faq">
                                     </div>
                                     <div class="form-group">
-                                        <label for="exampleFormControlInput1">Deskripsi</label>
-                                        <textarea class="form-control" id="deskripsi" name="deskripsi" placeholder="masukkan about"></textarea>
+                                        <label for="exampleFormControlTextarea1">Deskripsi</label>
+                                        <textarea class="form-control" name="deskripsi" id="exampleFormControlTextarea1" rows="3"></textarea>
                                     </div>
-                                    <div class="form-group">
-                                        <label for="exampleFormControlInput1">Visi</label>
-                                        <textarea class="form-control" id="visi" name="visi" placeholder="masukkan visi"></textarea>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                        <button type="button" class="btn btn-primary" id="btnSavefaq">Save
+                                            changes</button>
                                     </div>
-                                    <div class="form-group">
-                                        <label for="exampleFormControlInput1">Misi</label>
-                                        <textarea class="form-control" id="misi" name="misi" placeholder="masukkan misi"></textarea>
-                                    </div>
-
-
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                    <button type="button" class="btn btn-primary" id="btnSaveProgram">Save changes</button>
-                                </div>
-                            </form>
+                                </form>
+                            </div>
                         </div>
                     </div>
                 </div>
+                {{-- akhir modal tambah --}}
             </div>
 
             <div class="card-body">
@@ -77,33 +54,31 @@
                                 <th>No</th>
                                 <th>Judul</th>
                                 <th>Deskripsi</th>
-                                <th>Visi</th>
-                                <th>Misi</th>
-
-                                <th>Action</th>
+                                <th>Aksi</th>
 
                             </tr>
                         </thead>
 
                         <tbody>
-                            @foreach ($abouts as $about)
+                            @foreach ($faq as $key => $faq)
                                 <tr>
-                                    <td>1</td>
-                                    <td>{{ $about->judul }}</td>
-                                    <td>{{ strip_tags($about->deskripsi) }}</td>
-                                    <td>{{ strip_tags($about->visi) }}</td>
-                                    <td>{{ strip_tags($about->misi) }}</td>
+                                    <td>{{ $key + 1 }}</td>
+                                    <td>{{ $faq->judul }}</td>
+                                    <td>{{ strip_tags($faq->deskripsi) }}</td>
                                     <td>
-
                                         <button type="button" class="btn btn-primary" data-toggle="modal"
-                                            data-target="#Edit-{{ $about->id }}">
-                                            Edit
+                                            data-target="#Edit-{{ $faq->id }}">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                                fill="currentColor" class="bi bi-pencil-fill" viewBox="0 0 16 16">
+                                                <path
+                                                    d="M12.854.146a.5.5 0 0 0-.707 0L10.5 1.793 14.207 5.5l1.647-1.646a.5.5 0 0 0 0-.708zm.646 6.061L9.793 2.5 3.293 9H3.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.207zm-7.468 7.468A.5.5 0 0 1 6 13.5V13h-.5a.5.5 0 0 1-.5-.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.5-.5V10h-.5a.5.5 0 0 1-.175-.032l-.179.178a.5.5 0 0 0-.11.168l-2 5a.5.5 0 0 0 .65.65l5-2a.5.5 0 0 0 .168-.11z" />
+                                            </svg>
                                         </button>
 
 
                                         {{-- modal edit --}}
                                         <!-- Modal -->
-                                        <div class="modal fade" id="Edit-{{ $about->id }}" data-backdrop="static"
+                                        <div class="modal fade" id="Edit-{{ $faq->id }}" data-backdrop="static"
                                             data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel"
                                             aria-hidden="true">
                                             <div class="modal-dialog modal-lg">
@@ -115,7 +90,7 @@
                                                             <span aria-hidden="true">&times;</span>
                                                         </button>
                                                     </div>
-                                                    <form class="editformabout" data-id="{{ $about->id }}"
+                                                    <form class="editformfaq" data-id="{{ $faq->id }}"
                                                         enctype="multipart/form-data">
                                                         @csrf
                                                         <div class="modal-body">
@@ -123,26 +98,14 @@
                                                                 <label for="exampleFormControlInput1">Judul</label>
                                                                 <input type="text" class="form-control" name="judul"
                                                                     id="exampleFormControlInput1"
-                                                                    value="{{ $about->judul }}">
+                                                                    value="{{ $faq->judul }}">
                                                             </div>
                                                             <div class="form-group">
-                                                                <label for="exampleFormControlInput1">Deskripsi</label>
-                                                                <textarea class="form-control" id="deskripsi2-{{ $about->id }}" name="deskripsi" placeholder="masukkan about">{{ strip_tags($about->deskripsi) }}</textarea>
-                                                            </div>
-                                                            <div class="form-group">
-                                                                <label for="exampleFormControlInput1">Visi</label>
-                                                                <textarea class="form-control" id="visi-{{ $about->id }}" name="visi" placeholder="masukkan visi">{{ strip_tags($about->visi) }}</textarea>
-                                                            </div>
-                                                            <div class="form-group">
-                                                                <label for="exampleFormControlInput1">Misi</label>
-                                                                <textarea class="form-control" id="misi-{{ $about->id }}" name="misi" placeholder="masukkan misi">{{ strip_tags($about->misi) }}</textarea>
+                                                                <label for="exampleFormControlTextarea1">Deskripsi</label>
+                                                                <textarea class="form-control" name="deskripsi" id="exampleFormControlTextarea1" rows="3">{{ $faq->deskripsi }}</textarea>
                                                             </div>
 
 
-
-                                                            <div class="row">
-
-                                                            </div>
                                                         </div>
                                                         <div class="modal-footer">
                                                             <button type="button" class="btn btn-secondary"
@@ -156,9 +119,19 @@
                                         </div>
                                         {{-- akhir modal edit --}}
 
-
+                                        <form action="{{ route('faq.destroy', $faq->id) }}" method="POST"
+                                            class="form-delete-faq">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" class="btn btn-danger btn-submit-delete">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                                    fill="currentColor" class="bi bi-trash-fill" viewBox="0 0 16 16">
+                                                    <path
+                                                        d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5M8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5m3 .5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 1 0" />
+                                                </svg>
+                                            </button>
+                                        </form>
                                     </td>
-
                                 </tr>
                             @endforeach
 
@@ -169,25 +142,32 @@
         </div>
 
     </div>
+    <!-- /.container-fluid -->
 
-
+    </div>
+    </div>
+    <!-- End of Main Content -->
     <script>
-        $('#btnSaveProgram').on('click', function() {
-            let form = document.getElementById('formabout');
-            let formData = new FormData(form);
-            if (CKEDITOR.instances.deskripsi) {
-                formData.set('deskripsi', CKEDITOR.instances.deskripsi.getData());
+        // Update label filename
+        document.addEventListener('change', function(e) {
+            if (e.target.classList.contains('custom-file-input')) {
+                e.target.nextElementSibling.innerText = e.target.files[0].name;
             }
+        });
+        $('#btnSavefaq').on('click', function() {
+            let form = document.getElementById('formfaq');
+            let formData = new FormData(form);
+
 
             $.ajax({
-                url: "{{ route('Tambah_About') }}",
+                url: "{{ route('Tambah_Faq') }}",
                 type: "POST",
                 data: formData,
                 processData: false,
                 contentType: false,
 
                 beforeSend: function() {
-                    $('#btnSaveProgram')
+                    $('#btnSavefaq')
                         .prop('disabled', true)
                         .text('Menyimpan...');
                 },
@@ -196,7 +176,7 @@
                     Swal.fire({
                         icon: 'success',
                         title: 'Berhasil',
-                        text: 'Program berhasil ditambahkan',
+                        text: 'faq berhasil ditambahkan',
                         timer: 2000,
                         showConfirmButton: false
                     }).then(() => {
@@ -223,50 +203,21 @@
                 },
 
                 complete: function() {
-                    $('#btnSaveProgram')
+                    $('#btnSavefaq')
                         .prop('disabled', false)
-                        .text('Simpan Program');
+                        .text('Simpan faq');
                 }
             });
         });
 
-        // Update label filename
-        document.addEventListener('change', function(e) {
-            if (e.target.classList.contains('custom-file-input')) {
-                e.target.nextElementSibling.innerText = e.target.files[0].name;
-            }
-        });
-
-
-
-        // Optional: destroy editor saat modal ditutup
-        document.addEventListener("DOMContentLoaded", function() {
-            CKEDITOR.replace('deskripsi');
-        });
-        document.addEventListener("DOMContentLoaded", function() {
-
-            document.querySelectorAll('.editor').forEach(function(el) {
-
-                CKEDITOR.replace(el.id);
-
-            });
-
-        });
-
-        $(document).on('submit', '.editformabout', function(e) {
+        $(document).on('submit', '.editformfaq', function(e) {
             e.preventDefault();
 
             let form = $(this);
             let id = form.data('id');
             let formData = new FormData(this);
-
-            let editorId = 'deskripsi2-' + id;
-            if (CKEDITOR.instances[editorId]) {
-                formData.set('deskripsi', CKEDITOR.instances[editorId].getData());
-            }
-
             $.ajax({
-                url: "{{ url('/edit_about') }}/" + id,
+                url: "{{ url('/edit_faq') }}/" + id,
                 type: "POST",
                 data: formData,
                 processData: false,
@@ -282,7 +233,7 @@
             });
         });
 
-        $(document).on('submit', '.form-delete-about', function(e) {
+        $(document).on('submit', '.form-delete-faq', function(e) {
             e.preventDefault();
 
             let form = $(this);

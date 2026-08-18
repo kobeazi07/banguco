@@ -7,19 +7,48 @@
 
 
         <!-- Content Row -->
-        @foreach ($cv as $cv)
+        @foreach ($setting as $cv)
             <div class="d-sm-flex align-items-center justify-content-between mb-4">
                 <h1 class="h3 mb-0 text-gray-800">Dashboard</h1>
-                <a href="{{ asset($cv->cv) }}" target="_blank" rel="noopener noreferrer"
-                    class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm">
+                {{-- <a href="{{ asset($cv->cv) }}" target="_blank" rel="noopener noreferrer"
+             Pweb       class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm">
                     <i class="fas fa-file-pdf fa-sm text-white-50"></i> Lihat CV
-                </a>
+                </a> --}}
             </div>
             <form class="editformcv" data-id="{{ $cv->id }}" enctype="multipart/form-data">
                 @csrf
                 <div class="row">
-
                     <div class="col-lg-6">
+                        <div class="form-group">
+                            <label for="exampleFormControlInput1">Judul</label>
+                            <input type="text" class="form-control" name="judul" id="exampleFormControlInput1"
+                                value="{{ $cv->tittle }}" placeholder="masukkan portfolio">
+                        </div>
+                        <div class="form-group">
+                            <label for="exampleFormControlInput1">Deskripsi</label>
+                            <textarea class="form-control" id="deskripsi" name="deskripsi" placeholder="masukkan portfolio">{{ $cv->description }}</textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="exampleFormControlInput1">Meta</label>
+                            <input type="text" value="{{ $cv->meta }}" class="form-control" name="meta"
+                                id="exampleFormControlInput1" placeholder="masukkan portfolio">
+                        </div>
+                        <div class="form-group">
+                            <label for="exampleFormControlInput1">Harga/Liter</label>
+                            <input type="number" value="{{ $cv->price }}" class="form-control" name="harga"
+                                id="exampleFormControlInput1" placeholder="masukkan portfolio">
+                        </div>
+                        <div class="form-group">
+                            <label for="exampleFormControlInput1">No Wa</label>
+                            <input type="number" value="{{ $cv->no_wa }}" class="form-control" name="nowa"
+                                id="exampleFormControlInput1" placeholder="masukkan portfolio">
+                        </div>
+                        <button type="submit" class="btn btn-primary mt-3 float-right">Save
+                            changes</button>
+                    </div>
+                </div>
+
+                {{-- <div class="col-lg-6">
                         <label for="">Upload CV</label>
                         <div class="custom-file">
                             <input type="file" class="custom-file-input" name="cv">
@@ -28,10 +57,9 @@
                         </div>
                         <button type="submit" class="btn btn-primary mt-3 float-right">Save
                             changes</button>
-                    </div>
+                    </div> --}}
             </form>
-    </div>
-    @endforeach
+        @endforeach
     </div>
     <script>
         // Update label filename
@@ -51,7 +79,7 @@
 
 
             $.ajax({
-                url: "{{ url('/edit_cv') }}/" + id,
+                url: "{{ url('/edit_setting') }}/" + id,
                 type: "POST",
                 data: formData,
                 processData: false,

@@ -18,11 +18,17 @@
               <span>Dashboard</span></a>
       </li>
 
-      <li class="nav-item {{ Route::is('HalamanDashboard') ? 'active' : '' }}">
-          <a class="nav-link" href="{{ Route('HalamanDashboard') }}">
+      <li class="nav-item {{ Route::is('HalamanAdminAbout') ? 'active' : '' }}">
+          <a class="nav-link" href="{{ Route('HalamanAdminAbout') }}">
               <i class="fas fa-fw fa-tachometer-alt"></i>
               <span>About</span></a>
       </li>
+      <li class="nav-item {{ Route::is('HalamanAdminFaq') ? 'active' : '' }}">
+          <a class="nav-link" href="{{ Route('HalamanAdminFaq') }}">
+              <i class="fas fa-fw fa-tachometer-alt"></i>
+              <span>FAQ</span></a>
+      </li>
+
 
       <!-- Divider -->
       <hr class="sidebar-divider">
@@ -33,7 +39,7 @@
       <!-- Divider -->
       <hr class="sidebar-divider">
       <!-- Nav Item - Tables -->
-      <li class="nav-item {{ Route::is('HalamanPortfolio') ? 'active' : '' }}">
+      {{-- <li class="nav-item {{ Route::is('HalamanPortfolio') ? 'active' : '' }}">
           <a class="nav-link" href="{{ Route('HalamanPortfolio') }}">
               <i class="fas fa-fw fa-table"></i>
               <span>Portfolio</span></a>
@@ -42,7 +48,7 @@
           <a class="nav-link" href="{{ Route('HalamanAbout') }}">
               <i class="fas fa-fw fa-table"></i>
               <span>About</span></a>
-      </li>
+      </li> --}}
 
 
       <!-- Divider -->
