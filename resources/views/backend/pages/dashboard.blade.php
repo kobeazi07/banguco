@@ -43,8 +43,21 @@
                             <input type="number" value="{{ $cv->no_wa }}" class="form-control" name="nowa"
                                 id="exampleFormControlInput1" placeholder="masukkan portfolio">
                         </div>
-                        <button type="submit" class="btn btn-primary mt-3 float-right">Save
-                            changes</button>
+
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="form-group">
+                            <label for="exampleFormControlInput1">Link IG</label>
+                            <textarea class="form-control" id="link_ig" name="link_ig" placeholder="masukkan portfolio">{{ $cv->link_ig }}</textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="exampleFormControlInput1">Link Facebook</label>
+                            <textarea class="form-control" id="link_facebook" name="link_facebook" placeholder="masukkan portfolio">{{ $cv->link_facebook }}</textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="exampleFormControlInput1">Link Tiktok</label>
+                            <textarea class="form-control" id="link_tiktok" name="link_tiktok" placeholder="masukkan portfolio">{{ $cv->link_tiktok }}</textarea>
+                        </div>
                     </div>
                 </div>
 
@@ -58,6 +71,8 @@
                         <button type="submit" class="btn btn-primary mt-3 float-right">Save
                             changes</button>
                     </div> --}}
+                <button type="submit" class="btn btn-primary mt-3 float-right">Save
+                    changes</button>
             </form>
         @endforeach
     </div>

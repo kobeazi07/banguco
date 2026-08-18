@@ -32,6 +32,9 @@ class AdminController extends Controller
             'meta'     => $request->meta,
             'price' => $request->harga,
             'no_wa' => $request->nowa,
+            'link_ig' => $request->link_ig,
+            'link_facebook' => $request->link_facebook,
+            'link_tiktok' => $request->link_tiktok,
         ];
 
         // cek jika ada thumbnail baru
@@ -175,5 +178,47 @@ class AdminController extends Controller
                 'message' => $e->getMessage()
             ], 500);
         }
+    }
+    //login
+    public function halamanlogin()
+    {
+
+        return view('backend.layouts.login');
+    }
+    public function login(Request $request)
+    {
+        // dd($request->all());
+        $request->validate([
+            'email' => 'required|email',
+            'password' => 'required|min:6',
+        ], [
+            'email.required' => 'Email wajib diisi',
+            'email.email' => 'Format email tidak valid',
+            'password.required' => 'Password wajib diisi',
+            'password.min' => 'Password minimal 6 karakter',
+        ]);
+        $credentials = $request->only('email', 'password');
+        $remember = $request->has('remember');
+        if (Auth::attempt($credentials, $remember)) {
+            $request->session()->regenerate();
+            return response()->json([
+                'success' => true,
+                'message' => 'Login berhasil',
+                'redirect' => route('HalamanDashboard') // sesuaikan route tujuan
+            ]);
+        }
+        // Password salah
+        return response()->json([
+            'success' => false,
+            'message' => 'Password salah! Silakan coba lagi.'
+        ], 401);
+    }
+    public function user_logout(Request $request)
+    {
+
+        Auth::logout();
+        request()->session()->invalidate();
+        request()->session()->regenerateToken();
+        return redirect('/');
     }
 }

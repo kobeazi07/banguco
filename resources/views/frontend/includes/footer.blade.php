@@ -40,9 +40,12 @@
               <div class="col-lg-3">
                   <div class="social-links d-flex justify-content-lg-end justify-content-center">
 
-                      <a href=""><i class="bi bi-instagram"></i></a>
-                      <a href=""><i class="bi bi-facebook"></i></a>
-                      <a href=""><i class="bi bi-tiktok"></i></a>
+                      <a href="{{ $setting->link_ig }}" target="_blank" rel="noopener noreferrer"><i
+                              class="bi bi-instagram"></i></a>
+                      <a href="{{ $setting->link_facebook }}" target="_blank" rel="noopener noreferrer"><i
+                              class="bi bi-facebook"></i></a>
+                      <a href="{{ $setting->link_tiktok }}" target="_blank" rel="noopener noreferrer"><i
+                              class="bi bi-tiktok"></i></a>
                       <a href="https://wa.me/{{ $nowa }}" target="_blank" rel="noopener noreferrer">
                           <i class="bi bi-whatsapp"></i>
                       </a>

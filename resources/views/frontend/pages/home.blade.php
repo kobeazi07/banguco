@@ -180,7 +180,7 @@
                             <p>
                                 Bersama Bang UCO, ubah minyak jelantah menjadi manfaat bagi bumi dan masa depan.
                             </p>
-                            <a href="#" class="btn more-btn bg-biru">Tentang Kami</a>
+                            <a href="{{ Route('HalamanAbout') }}" class="btn more-btn bg-biru">Tentang Kami</a>
                         </div>
                     </div>
 
@@ -211,7 +211,8 @@
                                 sesuatu yang sebelumnya dianggap tidak berguna
                             </p>
 
-                            <a href="#" class="btn more-btn bg-hijau text-white">Learn More</a>
+                            <a href="{{ Route('HalamanLayanan') }}" class="btn more-btn bg-hijau text-white">Learn
+                                More</a>
                         </div>
 
                     </div>
