@@ -30,11 +30,14 @@
               @php
                   $setting = App\Models\SettingModel::first();
 
-                  $nowa = preg_replace('/[^0-9]/', '', $setting->nowa);
+                  $nowa = preg_replace('/[^0-9]/', '', $setting->no_wa);
 
                   if (str_starts_with($nowa, '0')) {
                       $nowa = '62' . substr($nowa, 1);
                   }
+
+                  $pesanWa = urlencode($setting->text_wa);
+
               @endphp
               <!-- Social -->
               <div class="col-lg-3">
@@ -46,7 +49,8 @@
                               class="bi bi-facebook"></i></a>
                       <a href="{{ $setting->link_tiktok }}" target="_blank" rel="noopener noreferrer"><i
                               class="bi bi-tiktok"></i></a>
-                      <a href="https://wa.me/{{ $nowa }}" target="_blank" rel="noopener noreferrer">
+                      <a href="https://api.whatsapp.com/send?phone={{ $nowa }}&text={{ $pesanWa }}"
+                          target="_blank" rel="noopener noreferrer">
                           <i class="bi bi-whatsapp"></i>
                       </a>
                   </div>

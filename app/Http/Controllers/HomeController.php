@@ -15,11 +15,11 @@ class HomeController extends Controller
         $setting = SettingModel::first();
         $faqs = Faq::get();
         $nowa = preg_replace('/[^0-9]/', '', $setting->nowa);
-
+        $pesanWa = urlencode($setting->text_wa);
         if (str_starts_with($nowa, '0')) {
             $nowa = '62' . substr($nowa, 1);
         }
-        return view('frontend.pages.home', compact('setting', 'nowa', 'faqs'));
+        return view('frontend.pages.home', compact('setting', 'nowa', 'faqs', 'pesanWa'));
     }
     public function about()
     {

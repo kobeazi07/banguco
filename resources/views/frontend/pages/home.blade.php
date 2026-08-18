@@ -341,7 +341,7 @@
                 </div>
                 <div class="row mt-4 pl-5 pr-5">
                     <div class="col-lg-12 d-flex justify-content-center">
-                        <a href="https://wa.me/{{ preg_replace('/^0/', '62', $setting->nowa) }}"
+                        <a href="https://api.whatsapp.com/send?phone={{ preg_replace('/^0/', '62', $setting->no_wa) }}&text={{ $setting->text_wa }}"
                             class="btn more-btn bg-hijau text-white d-inline-flex align-items-center gap-2"
                             target="_blank" rel="noopener noreferrer">
 

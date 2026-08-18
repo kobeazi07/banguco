@@ -35,6 +35,7 @@ class AdminController extends Controller
             'link_ig' => $request->link_ig,
             'link_facebook' => $request->link_facebook,
             'link_tiktok' => $request->link_tiktok,
+            'text_wa' => $request->text_wa,
         ];
 
         // cek jika ada thumbnail baru

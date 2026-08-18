@@ -58,6 +58,10 @@
                             <label for="exampleFormControlInput1">Link Tiktok</label>
                             <textarea class="form-control" id="link_tiktok" name="link_tiktok" placeholder="masukkan portfolio">{{ $cv->link_tiktok }}</textarea>
                         </div>
+                        <div class="form-group">
+                            <label for="exampleFormControlInput1">Text WA</label>
+                            <textarea class="form-control" id="text_wa" name="text_wa" placeholder="masukkan portfolio">{{ $cv->text_wa }}</textarea>
+                        </div>
                     </div>
                 </div>
 

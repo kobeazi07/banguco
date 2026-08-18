@@ -4,10 +4,12 @@
     <head>
         <meta charset="utf-8">
         <meta content="width=device-width, initial-scale=1.0" name="viewport">
-        <title>Minyak Jelantah Pontianak | Bang Uco</title>
-        <meta name="description"
-            content="Jual Minyak Jelantah Pontianak | Bang Uco - Kami menyediakan layanan pengumpulan dan pengolahan minyak jelantah bekas di Pontianak. Dapatkan layanan profesional dan ramah lingkungan untuk mengelola minyak jelantah Anda.">
-        <meta name="keywords" content="minyak jelantah, pontianak, pengumpulan minyak, pengolahan minyak">
+        @php
+            $setting = App\Models\SettingModel::first();
+        @endphp
+        <title>{{ $setting->tittle }}</title>
+        <meta name="description" content="{{ $setting->description }}">
+        <meta name="keywords" content="{{ $setting->meta }}">
         <script src="https://code.jquery.com/jquery-3.7.1.min.js"
             integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
 

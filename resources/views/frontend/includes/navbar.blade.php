@@ -40,14 +40,17 @@
                 @php
                     $setting = App\Models\SettingModel::first();
 
-                    $nowa = preg_replace('/[^0-9]/', '', $setting->nowa);
+                    $nowa = preg_replace('/[^0-9]/', '', $setting->no_wa);
 
                     if (str_starts_with($nowa, '0')) {
                         $nowa = '62' . substr($nowa, 1);
                     }
+
+                    $pesanWa = urlencode($setting->text_wa);
+
                 @endphp
                 <a class="btn-getstarted bg-hijau text-white d-inline-flex align-items-center gap-2"
-                    href="https://wa.me/{{ $nowa }}">
+                    href="https://api.whatsapp.com/send?phone={{ $nowa }}&text={{ $pesanWa }}">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                         class="bi bi-whatsapp" viewBox="0 0 16 16">
 
