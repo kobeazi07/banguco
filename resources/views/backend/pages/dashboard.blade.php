@@ -29,7 +29,7 @@
                             <textarea class="form-control" id="deskripsi" name="deskripsi" placeholder="masukkan portfolio">{{ $cv->description }}</textarea>
                         </div>
                         <div class="form-group">
-                            <label for="exampleFormControlInput1">Meta</label>
+                            <label for="exampleFormControlInput1">Kata Kunci</label>
                             <input type="text" value="{{ $cv->meta }}" class="form-control" name="meta"
                                 id="exampleFormControlInput1" placeholder="masukkan portfolio">
                         </div>
