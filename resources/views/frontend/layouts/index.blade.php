@@ -4,12 +4,12 @@
     <head>
         <meta charset="utf-8">
         <meta content="width=device-width, initial-scale=1.0" name="viewport">
-        @php
-            $setting = App\Models\SettingModel::first();
-        @endphp
-        <title>{{ $setting->tittle }}</title>
-        <meta name="description" content="{{ $setting->description }}">
-        <meta name="keywords" content="{{ $setting->meta }}">
+            @php
+                $setting = App\Models\SettingModel::first();
+            @endphp
+            <title>{{ $setting->tittle }}</title>
+            <meta name="description" content="{{ $setting->description }}">
+            <meta name="keywords" content="{{ $setting->meta }}">
         <script src="https://code.jquery.com/jquery-3.7.1.min.js"
             integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
 

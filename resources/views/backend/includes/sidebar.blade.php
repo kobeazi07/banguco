@@ -28,7 +28,11 @@
               <i class="fas fa-fw fa-tachometer-alt"></i>
               <span>FAQ</span></a>
       </li>
-
+      <li class="nav-item {{ Route::is('HalamanAdminBlog') ? 'active' : '' }}">
+          <a class="nav-link" href="{{ Route('HalamanAdminBlog') }}">
+              <i class="fas fa-fw fa-tachometer-alt"></i>
+              <span>Blog</span></a>
+      </li>
 
       <!-- Divider -->
       <hr class="sidebar-divider">

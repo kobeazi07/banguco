@@ -218,7 +218,7 @@
                     </div>
 
                     <div class="col-lg-6 order-1 order-lg-2" data-aos="fade-up" data-aos-delay="200">
-                        <img src="{{ asset('frontend/assets/img/features-2.webp') }}" class="img-fluid rounded-4 "
+                        <img src="{{ asset('frontend/assets/img/untan.webp') }}" class="img-fluid rounded-4 "
                             alt="">
                     </div>
 

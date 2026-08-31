@@ -28,7 +28,11 @@
                                 Layanan
                             </a>
                         </li>
-
+                        <li>
+                            <a href="{{ route('HalamanAdminBlog') }}">
+                                Blog
+                            </a>
+                        </li>
                         <li>
                             <a href="{{ route('HalamanHome') }}#about">
                                 Harga

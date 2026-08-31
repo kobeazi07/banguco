@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\SettingModel;
 use App\Models\Faq;
+use App\Models\Blog;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
@@ -29,4 +30,22 @@ class HomeController extends Controller
     {
         return view('frontend.pages.layanan');
     }
+    public function blog()
+    {
+        $blog = Blog::get();
+        return view('frontend.pages.blog', compact('blog'));
+    }
+    public function dblog($slug)
+    {
+        $blog = Blog::where('slug', $slug)->firstOrFail();
+        return view('frontend.pages.dblog', compact('blog'));
+    }
+    // public function dblog($slug)
+    // {
+    //     $blog = Blog::where('slug', $slug)->firstOrFail();
+
+    //     $g_blog = G_Blog::where('blog_id', $blog->id)->get();
+
+    //     return view('frontend.pages.dblog', compact('blog', 'g_blog'));
+    // }
 }

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
 use Intervention\Image\Facades\Image;
@@ -13,6 +14,7 @@ use Illuminate\Support\Facades\Hash;
 use App\Models\SettingModel;
 use App\Models\About;
 use App\Models\Faq;
+use App\Models\Blog;
 
 class AdminController extends Controller
 {
@@ -169,6 +171,142 @@ class AdminController extends Controller
             return response()->json([
                 'status'  => 1,
                 'message' => 'Data faq berhasil dihapus'
+            ]);
+        } catch (\Exception $e) {
+
+            DB::rollBack();
+
+            return response()->json([
+                'status'  => 0,
+                'message' => $e->getMessage()
+            ], 500);
+        }
+    }
+
+    // blog
+    public function admin_blog()
+    {
+        $blog = Blog::get();
+        return view('backend.pages.blog', compact('blog'));
+    }
+    public function tambah_blog(Request $request)
+    {
+
+        DB::beginTransaction();
+
+        try {
+            $thumbnailPath = null;
+            if ($request->hasFile('foto')) {
+                $thumbnail = $request->file('foto');
+
+                $originalName = $thumbnail->getClientOriginalName();
+
+                // Ganti spasi dengan tanda -
+                $originalName = str_replace(' ', '-', $originalName);
+
+                $thumbnailName = uniqid() . '_foto_' . $originalName;
+
+                $thumbnail->move(
+                    public_path('inputan/blog/'),
+                    $thumbnailName
+                );
+
+                $thumbnailPath = 'inputan/blog/' . $thumbnailName;
+            }
+            $slug = Str::slug($request->judul);
+
+            $originalSlug = $slug;
+            $count = 1;
+
+            while (Blog::where('slug', $slug)->exists()) {
+                $slug = $originalSlug . '-' . $count;
+                $count++;
+            }
+
+            $blog = Blog::create([
+                'judul' => $request->judul,
+                'deskripsi' => $request->deskripsi,
+                'foto' =>  $thumbnailPath,
+                'slug' => $slug,
+            ]);
+
+            DB::commit();
+            return response()->json([
+                'status' => 1,
+                'message' => 'blog berhasil ditambahkan'
+            ]);
+        } catch (\Exception $e) {
+            DB::rollBack();
+
+            return response()->json([
+                'status' => 0,
+                'message' => $e->getMessage()
+            ], 500);
+        }
+    }
+    public function edit_blog(Request $request, $id)
+    {
+
+        $blog = Blog::find($id);
+        $slug = Str::slug($request->judul);
+
+        // Cek apakah slug sudah digunakan artikel lain
+        $originalSlug = $slug;
+        $count = 1;
+
+        while (
+            Blog::where('slug', $slug)
+            ->where('id', '!=', $id)
+            ->exists()
+        ) {
+            $slug = $originalSlug . '-' . $count;
+            $count++;
+        }
+
+        $data = [
+            'judul' => $request->judul,
+            'deskripsi' => $request->deskripsi
+        ];
+        if ($request->hasFile('foto')) {
+
+            $thumbnail = $request->file('foto');
+            $originalName = $thumbnail->getClientOriginalName();
+            $originalName = str_replace(' ', '-', $originalName);
+            $thumbnailName = uniqid() . '_foto_' . $originalName;
+            $thumbnail->move(
+                public_path('inputan/blog/'),
+                $thumbnailName
+            );
+            // Simpan path ke database
+            $data['foto'] = 'inputan/blog/' . $thumbnailName;
+        }
+
+
+        Blog::where('id', $id)->update($data);
+        return response()->json([
+            'status'  => 1,
+            'message' => 'Data blog berhasil diupdate'
+        ]);
+    }
+    public function blog_destroy(Blog $blog)
+    {
+        DB::beginTransaction();
+
+        try {
+
+            // hapus file gambar jika ada
+            if ($blog->foto && file_exists(public_path($blog->foto))) {
+                unlink(public_path($blog->foto));
+            }
+
+            // hapus data
+            $blog->delete();
+
+            DB::commit();
+
+            return response()->json([
+                'status'  => 1,
+                'message' => 'Data blog berhasil dihapus'
             ]);
         } catch (\Exception $e) {
 
