@@ -16,7 +16,8 @@ Route::post('/logout', [AdminController::class, 'user_logout'])->name('Logout');
 Route::middleware(['auth', 'role:Admin'])->group(function () {
     Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('HalamanDashboard');
     Route::post('/edit_setting/{id}', [AdminController::class, 'edit_setting'])->name('Edit_setting');
-
+    Route::get('/profiladmin', [AdminController::class, 'profiladmin'])->name('HalamanPorfiladmin');
+    Route::post('/edit_profiladmin/{id}', [AdminController::class, 'edit_profiladmin'])->name('Edit_profiladmin');
     Route::get('/about', [AdminController::class, 'about'])->name('HalamanAdminAbout');
     Route::post('/tambah_about', [AdminController::class, 'tambah_about'])->name('Tambah_About');
     Route::post('/edit_about/{id}', [AdminController::class, 'edit_about'])->name('Edit_About');

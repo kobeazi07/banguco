@@ -15,6 +15,7 @@ use App\Models\SettingModel;
 use App\Models\About;
 use App\Models\Faq;
 use App\Models\Blog;
+use App\Models\User;
 
 class AdminController extends Controller
 {
@@ -58,7 +59,33 @@ class AdminController extends Controller
             'message' => 'Portfolio berhasil diupdate'
         ]);
     }
+    public function profiladmin()
+    {
+        $users = Auth::user();
 
+        return view('backend.pages.profil', compact('users'));
+    }
+    public function edit_profiladmin(Request $request, $id)
+    {
+
+        $user = User::findOrFail(Auth::id());
+
+        $data = [
+            'name'  => $request->name,
+            'email' => $request->email,
+        ];
+
+        if ($request->filled('password')) {
+            $data['password'] = Hash::make($request->password);
+        }
+
+        $user->update($data);
+
+        return response()->json([
+            'status' => 1,
+            'message' => 'Profil admin berhasil diupdate'
+        ]);
+    }
     // about
     public function about()
     {
