@@ -9,6 +9,9 @@ use Illuminate\Support\Facades\File;
 use Intervention\Image\Facades\Image;
 use RealRashid\SweetAlert\Facades\Alert;
 use Illuminate\Support\Facades\Validator;
+use Intervention\Image\ImageManager;
+use Intervention\Image\Drivers\Gd\Driver;
+use Intervention\Image\Format;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use App\Models\SettingModel;
@@ -16,6 +19,7 @@ use App\Models\About;
 use App\Models\Faq;
 use App\Models\Blog;
 use App\Models\User;
+use App\Models\G_Blog;
 
 class AdminController extends Controller
 {
@@ -56,7 +60,7 @@ class AdminController extends Controller
 
         return response()->json([
             'status' => 1,
-            'message' => 'Portfolio berhasil diupdate'
+            'message' => 'blog berhasil diupdate'
         ]);
     }
     public function profiladmin()
@@ -223,23 +227,55 @@ class AdminController extends Controller
 
         try {
             $thumbnailPath = null;
+            // if ($request->hasFile('foto')) {
+            //     $thumbnail = $request->file('foto');
+
+            //     $originalName = $thumbnail->getClientOriginalName();
+
+            //     // Ganti spasi dengan tanda -
+            //     $originalName = str_replace(' ', '-', $originalName);
+
+            //     $thumbnailName = uniqid() . '_foto_' . $originalName;
+
+            //     $thumbnail->move(
+            //         public_path('inputan/blog/'),
+            //         $thumbnailName
+            //     );
+
+            //     $thumbnailPath = 'inputan/blog/' . $thumbnailName;
+            // }
             if ($request->hasFile('foto')) {
+
                 $thumbnail = $request->file('foto');
-
-                $originalName = $thumbnail->getClientOriginalName();
-
-                // Ganti spasi dengan tanda -
-                $originalName = str_replace(' ', '-', $originalName);
-
-                $thumbnailName = uniqid() . '_foto_' . $originalName;
-
-                $thumbnail->move(
-                    public_path('inputan/blog/'),
-                    $thumbnailName
+                $originalName = pathinfo(
+                    $thumbnail->getClientOriginalName(),
+                    PATHINFO_FILENAME
                 );
+                $originalName = str_replace(' ', '-', $originalName);
+                $thumbnailName = uniqid() . '_foto_' . $originalName . '.webp';
+                $destination = public_path('inputan/blog/');
+                if (!file_exists($destination)) {
+                    mkdir($destination, 0755, true);
+                }
 
+                $manager = ImageManager::usingDriver(Driver::class);
+
+                $image = $manager->decode(
+                    $thumbnail->getPathname()
+                );
+                // Resize maksimal 1920px
+                $image->scaleDown(width: 1920);
+                // Convert ke WebP quality 80
+                $encoded = $image->encodeUsingFormat(
+                    Format::WEBP,
+                    quality: 80
+                );
+                $encoded->save(
+                    $destination . $thumbnailName
+                );
                 $thumbnailPath = 'inputan/blog/' . $thumbnailName;
             }
+
             $slug = Str::slug($request->judul);
 
             $originalSlug = $slug;
@@ -256,6 +292,50 @@ class AdminController extends Controller
                 'foto' =>  $thumbnailPath,
                 'slug' => $slug,
             ]);
+            $blog_id = $blog->id;
+            // dd($request->hasFile('files'));
+            if ($request->hasFile('files')) {
+
+                // Gunakan Image Manager
+                $manager = ImageManager::usingDriver(Driver::class);
+
+                foreach ($request->file('files') as $file) {
+                    $originalName = pathinfo(
+                        $file->getClientOriginalName(),
+                        PATHINFO_FILENAME
+                    );
+                    $originalName = str_replace(' ', '-', $originalName);
+                    $fileName = uniqid() . '_' . $originalName . '.webp';
+                    $destination = public_path(
+                        'inputan/blog/detailimg'
+                    );
+                    if (!file_exists($destination)) {
+                        mkdir($destination, 0755, true);
+                    }
+                    $image = $manager->decode($file);
+
+                    // Resize maksimal 1920px
+                    $image->scaleDown(width: 1920);
+
+                    // Convert ke WebP quality 80
+                    $encoded = $image->encodeUsingFormat(
+                        Format::WEBP,
+                        quality: 80
+                    );
+                    $encoded->save(
+                        $destination . '/' . $fileName
+                    );
+
+                    // Simpan ke database
+                    G_Blog::create([
+                        'blog_id' => $blog_id,
+                        'image'        => $fileName,
+                        'created_at'   => now(),
+                        'updated_at'   => now(),
+                    ]);
+                }
+            }
+
 
             DB::commit();
             return response()->json([
@@ -274,7 +354,7 @@ class AdminController extends Controller
     public function edit_blog(Request $request, $id)
     {
 
-        $blog = Blog::find($id);
+        $blog = Blog::findOrFail($id);
         $slug = Str::slug($request->judul);
 
         // Cek apakah slug sudah digunakan artikel lain
@@ -297,16 +377,97 @@ class AdminController extends Controller
         if ($request->hasFile('foto')) {
 
             $thumbnail = $request->file('foto');
-            $originalName = $thumbnail->getClientOriginalName();
-            $originalName = str_replace(' ', '-', $originalName);
-            $thumbnailName = uniqid() . '_foto_' . $originalName;
-            $thumbnail->move(
-                public_path('inputan/blog/'),
-                $thumbnailName
+            // Simpan nama file lama 
+            $oldPhoto = $blog->foto;
+            // Nama file tanpa extension
+            $originalName = pathinfo(
+                $thumbnail->getClientOriginalName(),
+                PATHINFO_FILENAME
             );
-            // Simpan path ke database
+            $originalName = str_replace(' ', '-', $originalName);
+            $thumbnailName = uniqid() . '_foto_' . $originalName . '.webp';
+            $destination = public_path('inputan/blog/');
+            if (!file_exists($destination)) {
+                mkdir($destination, 0755, true);
+            }
+            // Gunakan GD
+            $manager = ImageManager::usingDriver(Driver::class);
+            // Baca file upload
+            $image = $manager->decode($thumbnail);
+            // Resize maksimal 1920px, rasio tetap
+            $image->scaleDown(width: 1920);
+            // Convert ke WebP + compression
+            $encoded = $image->encodeUsingFormat(
+                Format::WEBP,
+                quality: 80
+            );
+            $encoded->save(
+                $destination . $thumbnailName
+            );
+
             $data['foto'] = 'inputan/blog/' . $thumbnailName;
+
+            if (!empty($oldPhoto)) {
+                $oldPhotoPath = public_path($oldPhoto);
+                if (file_exists($oldPhotoPath)) {
+                    unlink($oldPhotoPath);
+                }
+            }
         }
+        Blog::where('id', $id)->update($data);
+        $blog_id = $id;
+        if ($request->hasFile('files')) {
+
+            // Gunakan Image Manager
+            $manager = ImageManager::usingDriver(Driver::class);
+            foreach ($request->file('files') as $file) {
+                $originalName = pathinfo(
+                    $file->getClientOriginalName(),
+                    PATHINFO_FILENAME
+                );
+                $originalName = str_replace(' ', '-', $originalName);
+                $fileName = uniqid() . '_' . $originalName . '.webp';
+                $destination = public_path(
+                    'inputan/blog/detailimg'
+                );
+                if (!file_exists($destination)) {
+                    mkdir($destination, 0755, true);
+                }
+                $image = $manager->decode($file);
+                // Resize maksimal 1920px
+                $image->scaleDown(width: 1920);
+                // Convert ke WebP quality 80
+                $encoded = $image->encodeUsingFormat(
+                    Format::WEBP,
+                    quality: 80
+                );
+                $encoded->save(
+                    $destination . '/' . $fileName
+                );
+
+                // Simpan ke database
+                G_Blog::create([
+                    'blog_id' => $blog_id,
+                    'image'        => $fileName,
+                    'created_at'   => now(),
+                    'updated_at'   => now(),
+                ]);
+            }
+        }
+        // if ($request->hasFile('foto')) {
+
+        //     $thumbnail = $request->file('foto');
+        //     $oldPhoto = $blog->foto;
+        //     $originalName = $thumbnail->getClientOriginalName();
+        //     $originalName = str_replace(' ', '-', $originalName);
+        //     $thumbnailName = uniqid() . '_foto_' . $originalName;
+        //     $thumbnail->move(
+        //         public_path('inputan/blog/'),
+        //         $thumbnailName
+        //     );
+        //     // Simpan path ke database
+        //     $data['foto'] = 'inputan/blog/' . $thumbnailName;
+        // }
 
 
         Blog::where('id', $id)->update($data);
@@ -344,6 +505,26 @@ class AdminController extends Controller
                 'message' => $e->getMessage()
             ], 500);
         }
+    }
+
+    public function deletePictureblog($id)
+    {
+        $picture = G_Blog::findOrFail($id);
+
+        // hapus file fisik
+        $filePath = public_path('inputan/blog/detailimg/' . $picture->image);
+        // $filePath = public_path($picture->image);
+
+
+        if (file_exists($filePath)) {
+            unlink($filePath);
+        }
+
+        $picture->delete();
+
+        return response()->json([
+            'success' => true
+        ]);
     }
     //login
     public function halamanlogin()

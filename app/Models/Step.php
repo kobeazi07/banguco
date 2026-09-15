@@ -5,14 +5,9 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class Blog extends Model
+class Step extends Model
 {
     use HasFactory;
-    protected $table = 'blog';
+    protected $table = 'step';
     protected $guarded = [];
-
-    public function galeri_blog()
-    {
-        return $this->hasMany(G_Blog::class, 'blog_id');
-    }
 }

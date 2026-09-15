@@ -138,17 +138,29 @@
                     <div class="col-lg-6 about-images" data-aos="fade-up" data-aos-delay="200">
                         <div class="row gy-4">
                             <div class="col-lg-6">
-                                <img src="{{ asset('frontend/assets/img/about-company-1.webp') }}" class="img-fluid"
+                                {{-- <img src="{{ asset('frontend/assets/img/about-company-1.webp') }}" class="img-fluid"
+                                    alt=""> --}}
+                                <img src="{{ asset('frontend/assets/img/about-company-a.png') }}" class="img-fluid"
                                     alt="">
                             </div>
                             <div class="col-lg-6">
-                                <div class="row gy-4">
+                                {{-- <div class="row gy-4">
                                     <div class="col-lg-12">
                                         <img src="{{ asset('frontend/assets/img/about-company-2.webp') }}"
                                             class="img-fluid" alt="">
                                     </div>
                                     <div class="col-lg-12">
                                         <img src="{{ asset('frontend/assets/img/about-company-3.webp') }}"
+                                            class="img-fluid" alt="">
+                                    </div>
+                                </div> --}}
+                                <div class="row gy-4">
+                                    <div class="col-lg-12">
+                                        <img src="{{ asset('frontend/assets/img/about-company-b.png') }}"
+                                            class="img-fluid" alt="">
+                                    </div>
+                                    <div class="col-lg-12">
+                                        <img src="{{ asset('frontend/assets/img/about-company-c.jpg') }}"
                                             class="img-fluid" alt="">
                                     </div>
                                 </div>
@@ -171,7 +183,7 @@
                 <div class="row gy-4 justify-content-between features-item">
 
                     <div class="col-lg-6" data-aos="fade-up" data-aos-delay="100">
-                        <img src="{{ asset('frontend/assets/img/features-1.webp') }}" class="img-fluid" alt="">
+                        <img src="{{ asset('frontend/assets/img/features-a.png') }}" class="img-fluid" alt="">
                     </div>
 
                     <div class="col-lg-5 d-flex align-items-center" data-aos="fade-up" data-aos-delay="200">

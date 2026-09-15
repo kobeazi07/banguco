@@ -32,7 +32,7 @@ class HomeController extends Controller
     }
     public function blog()
     {
-        $blog = Blog::get();
+        $blog = Blog::orderBy('created_at', 'desc')->paginate(10);
         return view('frontend.pages.blog', compact('blog'));
     }
     public function dblog($slug)

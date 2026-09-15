@@ -32,4 +32,5 @@ Route::middleware(['auth', 'role:Admin'])->group(function () {
     Route::post('/tambah_blog', [AdminController::class, 'tambah_blog'])->name('Tambah_Blog');
     Route::post('/edit_blog/{id}', [AdminController::class, 'edit_blog'])->name('Edit_Blog');
     Route::delete('/blog/{blog}', [AdminController::class, 'blog_destroy'])->name('blog.destroy');
+    Route::delete('/blog/detail-picture/{id}', [AdminController::class, 'deletePictureblog']);
 });

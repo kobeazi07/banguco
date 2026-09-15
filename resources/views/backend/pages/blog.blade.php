@@ -27,6 +27,11 @@
                                         <input type="text" class="form-control" name="judul"
                                             id="exampleFormControlInput1" placeholder="masukkan judul blog">
                                     </div>
+
+                                    <div class="form-group">
+                                        <label for="exampleFormControlTextarea1">Deskripsi</label>
+                                        <textarea class="form-control" name="deskripsi" id="deskripsi" rows="3"></textarea>
+                                    </div>
                                     <div class="input-group mb-3">
                                         <div class="input-group-prepend">
                                             <span class="input-group-text">Foto </span>
@@ -37,11 +42,13 @@
                                                 file</label>
                                         </div>
                                     </div>
-                                    <div class="form-group">
-                                        <label for="exampleFormControlTextarea1">Deskripsi</label>
-                                        <textarea class="form-control" name="deskripsi" id="deskripsi" rows="3"></textarea>
-                                    </div>
+                                    <label>Detail Gambar</label>
+                                    <div class="input-group mb-3">
+                                        <button type="button" class="btn btn-primary" onclick="addInput()">Tambah
+                                            +</button>
 
+                                    </div>
+                                    <div id = "items-container"></div>
                                     <div class="modal-footer">
                                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                                         <button type="button" class="btn btn-primary" id="btnSaveblog">Save
@@ -170,7 +177,41 @@
                                                                         file</label>
                                                                 </div>
                                                             </div>
+                                                            <label>Detail Gambar</label>
+                                                            <div class="input-group mb-3">
+                                                                <button type="button" class="btn btn-primary"
+                                                                    onclick="addInput1  ({{ $blog->id }})">Tambah
+                                                                    +</button>
 
+                                                            </div>
+                                                            <div id = "items-container1-{{ $blog->id }}"></div>
+                                                            <div class="row">
+                                                                @if ($blog->galeri_blog->count())
+                                                                    @foreach ($blog->galeri_blog as $picture)
+                                                                        <div class="position-relative d-inline-block mr-2 mb-2"
+                                                                            id="picture-{{ $picture->id }}">
+
+                                                                            <img src="{{ asset('inputan/blog/detailimg/' . $picture->image) }}"
+                                                                                style="
+                                                                                width:80px;
+                                                                                height:80px;
+                                                                                object-fit:cover;
+                                                                                border-radius:6px;
+                                                                            ">
+
+                                                                            <button type="button"
+                                                                                class="btn btn-danger btn-sm position-absolute"
+                                                                                style="top:2px; right:2px; padding:2px 6px;"
+                                                                                onclick="deletePicture({{ $picture->id }})">
+                                                                                ×
+                                                                            </button>
+
+                                                                        </div>
+                                                                    @endforeach
+                                                                @else
+                                                                    <p>Gambar Kosong</p>
+                                                                @endif
+                                                            </div>
                                                         </div>
                                                         <div class="modal-footer">
                                                             <button type="button" class="btn btn-secondary"
@@ -288,6 +329,127 @@
             });
 
         });
+
+        // ad input
+        function addInput() {
+            let uniqueId = Date.now();
+
+            let html = `
+        <div class="input-group mb-3" id="item-${uniqueId}">
+            <div class="input-group-prepend">
+                <span class="input-group-text">Upload</span>
+            </div>
+
+            <div class="custom-file">
+                <input type="file" 
+                       name="files[]" 
+                       class="custom-file-input" 
+                       id="file-${uniqueId}">
+                <label class="custom-file-label" for="file-${uniqueId}">
+                    Choose file
+                </label>
+            </div>
+      
+            <div class="input-group-append">
+                <button type="button" 
+                        class="btn btn-danger"
+                        onclick="removeInput('${uniqueId}')">
+                    Hapus
+                </button>
+            </div>
+        </div>
+        `;
+
+            document.getElementById('items-container').insertAdjacentHTML('beforeend', html);
+        }
+
+        function addInput1(portfolioId) {
+            let uniqueId = Date.now();
+
+            let html = `
+        <div class="input-group mb-3" id="items1-${uniqueId}">
+            <div class="input-group-prepend">
+                <span class="input-group-text">Upload</span>
+            </div>
+
+            <div class="custom-file">
+                <input type="file"
+                       name="files[]"
+                       class="custom-file-input"
+                       id="file-${uniqueId}">
+                <label class="custom-file-label" for="file-${uniqueId}">
+                    Choose file
+                </label>
+            </div>
+
+            <div class="input-group-append">
+                <button type="button"
+                        class="btn btn-danger"
+                        onclick="removeInput1('${uniqueId}')">
+                    Hapus
+                </button>
+            </div>
+        </div>
+    `;
+
+            document.getElementById(`items-container1-${portfolioId}`).insertAdjacentHTML('beforeend', html);
+        }
+
+        function removeInput(id) {
+            document.getElementById(`item-${id}`).remove();
+        }
+
+        function removeInput1(id) {
+            document.getElementById(`items1-${id}`)?.remove();
+        }
+
+        // Update label filename
+        document.addEventListener('change', function(e) {
+            if (e.target.classList.contains('custom-file-input')) {
+                e.target.nextElementSibling.innerText = e.target.files[0].name;
+            }
+        });
+
+
+
+        // Optional: destroy editor saat modal ditutup
+        document.addEventListener("DOMContentLoaded", function() {
+            CKEDITOR.replace('deskripsi');
+        });
+        document.addEventListener("DOMContentLoaded", function() {
+
+            document.querySelectorAll('.editor').forEach(function(el) {
+
+                CKEDITOR.replace(el.id);
+
+            });
+
+        });
+
+        function deletePicture(id) {
+            if (!confirm('Hapus gambar ini?')) return;
+
+            fetch(`/blog/detail-picture/${id}`, {
+                    method: 'DELETE',
+                    headers: {
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                        'Accept': 'application/json'
+                    }
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        document.getElementById('picture-' + id).remove();
+                    } else {
+                        alert('Gagal menghapus gambar');
+                    }
+                })
+                .catch(error => {
+                    console.error(error);
+                    alert('Terjadi kesalahan');
+                });
+        }
+        //akhir addinput
 
         $(document).on('submit', '.editformblog', function(e) {
             e.preventDefault();

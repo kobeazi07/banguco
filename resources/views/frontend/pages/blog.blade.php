@@ -37,25 +37,62 @@
 
             <div class="container">
 
-                <div class="row gy-4">
-                    @foreach ($blog as $blog)
-                        <div class="col-lg-3 mb-3 me-3">
-                            <div class="card " style="width: 18rem;">
-                                <img src="{{ $blog->foto }}" class="card-img-top" alt="...">
+                <div class="row gy-4 justify-content-center">
+                    @foreach ($blog as $item)
+                        <div class="col-lg-3 mb-3 ">
+                            <div class="card " style="width: 18rem; ">
+                                <img src="{{ $item->foto }}" class="card-img-top" alt="..."
+                                    style="height: 200px; object-fit: cover;">
                                 <div class="card-body">
                                     <div class="blog-description-2-line">
-                                        <h5 class="card-title"> {!! str_replace('&nbsp;', ' ', $blog->judul) !!}</h5>
+                                        <h5 class="card-title"> {!! str_replace('&nbsp;', ' ', $item->judul) !!}</h5>
                                     </div>
                                     <div class="blog-description-2-line">
-                                        <p class="card-text"> {!! str_replace('&nbsp;', ' ', $blog->deskripsi) !!}</p>
+                                        <p class="card-text"> {!! str_replace('&nbsp;', ' ', $item->deskripsi) !!}</p>
                                     </div>
-                                    <a href="{{ route('HalamanDBlog', ['blog' => $blog->slug]) }}"
+                                    <a href="{{ route('HalamanDBlog', ['blog' => $item->slug]) }}"
                                         class="btn bg-hijau text-white w-100 mt-2">Read
                                         More</a>
                                 </div>
                             </div>
                         </div>
                     @endforeach
+                </div>
+                <div class="d-flex justify-content-center mt-4">
+                    <ul class="pagination custom-pagination">
+
+                        {{-- Previous --}}
+                        @if ($blog->onFirstPage())
+                            <li class="page-item disabled">
+                                <span class="page-link">‹</span>
+                            </li>
+                        @else
+                            <li class="page-item">
+                                <a class="page-link" href="{{ $blog->previousPageUrl() }}">‹</a>
+                            </li>
+                        @endif
+
+                        {{-- Nomor halaman --}}
+                        @foreach ($blog->getUrlRange(1, $blog->lastPage()) as $page => $url)
+                            <li class="page-item {{ $page == $blog->currentPage() ? 'active' : '' }}">
+                                <a class="page-link" href="{{ $url }}">
+                                    {{ $page }}
+                                </a>
+                            </li>
+                        @endforeach
+
+                        {{-- Next --}}
+                        @if ($blog->hasMorePages())
+                            <li class="page-item">
+                                <a class="page-link" href="{{ $blog->nextPageUrl() }}">›</a>
+                            </li>
+                        @else
+                            <li class="page-item disabled">
+                                <span class="page-link">›</span>
+                            </li>
+                        @endif
+
+                    </ul>
                 </div>
 
             </div>
