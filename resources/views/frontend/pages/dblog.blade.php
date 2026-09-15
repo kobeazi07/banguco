@@ -49,6 +49,26 @@
                     {!! str_replace('&nbsp;', ' ', $blog->deskripsi) !!}
                 </div>
 
+                <div class="row  mt-3 mb-5 d-flex justify-content-center">
+                    @foreach ($g_blog as $item)
+                        <div class="col-lg-6 col-xl-2 mb-3 me-1">
+                            <div class="blog-item">
+                                <div class="blog-img mt-5">
+
+                                    <a href="{{ asset('inputan/blog/detailimg/' . $item->image) }}" data-lightbox="Blog-1"
+                                        class="my-auto d-flex justify-content-center align-items-center">
+
+                                        <img src="{{ asset('inputan/blog/detailimg/' . $item->image) }}"
+                                            class="img-fluid rounded-image w-100" alt="">
+
+                                    </a>
+
+                                </div>
+                            </div>
+                        </div>
+                    @endforeach
+                </div>
+
             </div>
         </section><!-- /About Section -->
 

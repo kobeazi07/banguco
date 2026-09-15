@@ -15,7 +15,7 @@
 <link href="{{ asset('frontend/assets/vendor/aos/aos.css') }}" rel="stylesheet">
 <link href="{{ asset('frontend/assets/vendor/glightbox/css/glightbox.min.css') }}" rel="stylesheet">
 <link href="{{ asset('frontend/assets/vendor/swiper/swiper-bundle.min.css') }}" rel="stylesheet">
-
+<link href="{{ asset('frontend/lib/lightbox/css/lightbox.min.css') }}" rel="stylesheet">
 <!-- Main CSS File -->
 <link href="{{ asset('frontend/assets/css/main.css') }}" rel="stylesheet">
 

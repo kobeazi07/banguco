@@ -7,3 +7,4 @@
 
     <!-- Main JS File -->
     <script src="{{ asset('frontend/assets/js/main.js') }}"></script>
+    <script src="{{ asset('frontend/lib/lightbox/js/lightbox.min.js') }}"></script>
