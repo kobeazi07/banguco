@@ -33,9 +33,7 @@
                             Visi
                         </h2>
                         <p class="text-justify mt-2">
-                            Bang UCO hadir untuk mengubah minyak jelantah menjadi nilai dan manfaat bagi lingkungan.
-                            Dengan layanan pengumpulan dan pengolahan minyak jelantah yang profesional, kami
-                            berkomitmen untuk memberikan solusi yang ramah lingkungan bagi masyarakat Pontianak.
+                            {{ $about->visi }}
                         </p>
                         <div class="row">
 
@@ -49,9 +47,7 @@
                             Misi
                         </h2>
                         <p class="text-justify mt-2">
-                            Bang UCO hadir untuk mengubah minyak jelantah menjadi nilai dan manfaat bagi lingkungan.
-                            Dengan layanan pengumpulan dan pengolahan minyak jelantah yang profesional, kami
-                            berkomitmen untuk memberikan solusi yang ramah lingkungan bagi masyarakat Pontianak.
+                            {{ $about->misi }}
                         </p>
                         <div class="row">
 

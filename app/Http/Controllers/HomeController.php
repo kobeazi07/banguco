@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\SettingModel;
 use App\Models\Faq;
 use App\Models\Blog;
+use App\Models\About;
 use App\Models\G_Blog;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -25,7 +26,8 @@ class HomeController extends Controller
     }
     public function about()
     {
-        return view('frontend.pages.about');
+        $about = About::first();
+        return view('frontend.pages.about', compact('about'));
     }
     public function layanan()
     {
