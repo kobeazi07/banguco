@@ -26,47 +26,7 @@
                 <h6 class="m-0 font-weight-bold text-primary">DataTables Example</h6>
 
                 <!-- Modal -->
-                <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
-                    aria-hidden="true">
-                    <div class="modal-dialog modal-lg">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
-                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
-                            </div>
-                            <form id="formabout" enctype="multipart/form-data">
-                                @csrf
-                                <div class="modal-body">
-                                    <div class="form-group">
-                                        <label for="exampleFormControlInput1">Judul</label>
-                                        <input type="text" class="form-control" name="judul"
-                                            id="exampleFormControlInput1" placeholder="masukkan about">
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="exampleFormControlInput1">Deskripsi</label>
-                                        <textarea class="form-control" id="deskripsi" name="deskripsi" placeholder="masukkan about"></textarea>
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="exampleFormControlInput1">Visi</label>
-                                        <textarea class="form-control" id="visi" name="visi" placeholder="masukkan visi"></textarea>
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="exampleFormControlInput1">Misi</label>
-                                        <textarea class="form-control" id="misi" name="misi" placeholder="masukkan misi"></textarea>
-                                    </div>
 
-
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                    <button type="button" class="btn btn-primary" id="btnSaveProgram">Save changes</button>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                </div>
             </div>
 
             <div class="card-body">
@@ -131,14 +91,12 @@
                                                             </div>
                                                             <div class="form-group">
                                                                 <label for="exampleFormControlInput1">Visi</label>
-                                                                <textarea class="form-control" id="visi-{{ $about->id }}" name="visi" placeholder="masukkan visi">{{ strip_tags($about->visi) }}</textarea>
+                                                                <textarea class="form-control" id="visi-{{ $about->id }}" name="visi" placeholder="masukkan visi">{!! str_replace('&nbsp;', ' ', $about->visi) !!}</textarea>
                                                             </div>
                                                             <div class="form-group">
                                                                 <label for="exampleFormControlInput1">Misi</label>
-                                                                <textarea class="form-control" id="misi-{{ $about->id }}" name="misi" placeholder="masukkan misi">{{ strip_tags($about->misi) }}</textarea>
+                                                                <textarea class="form-control" id="misi-{{ $about->id }}" name="misi" placeholder="masukkan misi">{!! str_replace('&nbsp;', ' ', $about->misi) !!}</textarea>
                                                             </div>
-
-
 
                                                             <div class="row">
 
@@ -175,8 +133,8 @@
         $('#btnSaveProgram').on('click', function() {
             let form = document.getElementById('formabout');
             let formData = new FormData(form);
-            if (CKEDITOR.instances.deskripsi) {
-                formData.set('deskripsi', CKEDITOR.instances.deskripsi.getData());
+            if (CKEDITOR.instances.misi) {
+                formData.set('misi', CKEDITOR.instances.deskripsi.getData());
             }
 
             $.ajax({
@@ -237,11 +195,14 @@
             }
         });
 
-
-
-        // Optional: destroy editor saat modal ditutup
         document.addEventListener("DOMContentLoaded", function() {
             CKEDITOR.replace('deskripsi');
+        });
+        document.addEventListener("DOMContentLoaded", function() {
+            CKEDITOR.replace('visi');
+        });
+        document.addEventListener("DOMContentLoaded", function() {
+            CKEDITOR.replace('misi');
         });
         document.addEventListener("DOMContentLoaded", function() {
 
@@ -259,12 +220,30 @@
             let form = $(this);
             let id = form.data('id');
             let formData = new FormData(this);
-
+            let editorVisi = 'visi' + id;
+            let editorMisi = 'misi' + id;
             let editorId = 'deskripsi2-' + id;
-            if (CKEDITOR.instances[editorId]) {
-                formData.set('deskripsi', CKEDITOR.instances[editorId].getData());
+
+            if (CKEDITOR.instances[editorVisi]) {
+                formData.set(
+                    'visi',
+                    CKEDITOR.instances[editorVisi].getData()
+                );
             }
 
+            // Misi
+            if (CKEDITOR.instances[editorMisi]) {
+                formData.set(
+                    'misi',
+                    CKEDITOR.instances[editorMisi].getData()
+                );
+            }
+            if (CKEDITOR.instances[editorId]) {
+                formData.set(
+                    'deskripsi2',
+                    CKEDITOR.instances[editorId].getData()
+                );
+            }
             $.ajax({
                 url: "{{ url('/edit_about') }}/" + id,
                 type: "POST",
