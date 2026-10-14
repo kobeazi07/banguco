@@ -33,7 +33,7 @@
                             Visi
                         </h2>
                         <p class="text-justify mt-2">
-                            {{ $about->visi }}
+                            {!! str_replace('&nbsp;', ' ', $about->visi) !!}
                         </p>
                         <div class="row">
 
@@ -47,7 +47,7 @@
                             Misi
                         </h2>
                         <p class="text-justify mt-2">
-                            {{ $about->misi }}
+                            {!! str_replace('&nbsp;', ' ', $about->misi) !!}
                         </p>
                         <div class="row">
 
